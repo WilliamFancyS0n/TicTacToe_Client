@@ -1,4 +1,11 @@
 
+/*
+* Name: William Alger
+* Class: CSC 460
+* Date: 4/5/2022
+*
+* */
+
 
 import java.io.*;
 import java.net.*;
@@ -13,8 +20,9 @@ public class Client {
 
 
     public static void main(String[] args) {
+        String hostName = "localhost";
         try {
-            String hostName = "localhost";
+
             Socket toServerSocket = new Socket(hostName, 8787);
             DataInputStream instream = new DataInputStream(toServerSocket.getInputStream());
             DataOutputStream outstream = new DataOutputStream(toServerSocket.getOutputStream());
@@ -22,7 +30,8 @@ public class Client {
             out = new PrintWriter(outstream, true);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error: client could not connect");
+            System.exit(1);
         }
 
         board = new char[4][4];
@@ -53,7 +62,6 @@ public class Client {
                     System.out.print("Enter Column : ");
                     col = inp.nextInt();
                 } while (row < 0 || row > 3 || col > 3 || col < 0 || board[row][col] != ' '); // ensure a legal move
-
                 board[row][col] = 'O';
                 out.println("MOVE " + row + " " + col);
             }
@@ -86,6 +94,7 @@ public class Client {
                         row = Integer.parseInt(args[1]);
                         col = Integer.parseInt(args[2]);
                         board[row][col] = 'X';
+                        System.out.println("Server moved row:" + row + " col:" + col);
                     }
                 }
                 else {
@@ -100,8 +109,7 @@ public class Client {
     }
 
     public static void printBoard() { // prints the contents of our board
-        System.out.println("\n\n\n");
-        System.out.println("  0      1     2      3");
+        System.out.println("\n  0      1     2      3");
         System.out.println("      |     |     |");
         for (int i = 0; i < 4; i++) {
             System.out.println("   " + board[i][0] + "  |  " + board[i][1] + "  |  " + board[i][2] + "  |  " + board[i][3] + "       " + i);
